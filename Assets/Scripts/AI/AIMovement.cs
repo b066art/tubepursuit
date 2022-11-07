@@ -1,7 +1,6 @@
-using System.Collections;
 using UnityEngine;
 
-public class CarMovement : MonoBehaviour
+public class AIMovement : MonoBehaviour
 {
     [SerializeField] private float acceleration;
     [SerializeField] private float defaultSpeed;
