@@ -17,14 +17,14 @@ public class AIRotation : MonoBehaviour
 
     private void Awake() { bikeModel = transform.Find("Model"); }
 
-    private void FixedUpdate() {
+    private void Update() {
         if (!obstacleIsFound) { FindClosestObstacle(); }
 
         if (obstacleIsFound) {
             if (closestObstacle.transform.position.z - transform.position.z <= 0) { obstacleIsFound = false; }
 
-            transform.rotation = Quaternion.RotateTowards(transform.rotation, closestObstacle.rotation, rotationAngle * Time.fixedDeltaTime);
-            RotateModel();
+            transform.rotation = Quaternion.RotateTowards(transform.rotation, closestObstacle.rotation, rotationAngle * Time.deltaTime);
+            //RotateModel();
         }
     }
 
@@ -56,7 +56,7 @@ public class AIRotation : MonoBehaviour
     }
 
     private void RotateModel() {
-        float rotationFactor = Mathf.Clamp((lastEulerAngleZ - transform.rotation.eulerAngles.z) / 10f, -1, 1);
+        float rotationFactor = Mathf.Clamp((lastEulerAngleZ - transform.rotation.eulerAngles.z), -1, 1);
         bikeModel.localRotation = Quaternion.RotateTowards(bikeModel.localRotation, Quaternion.Euler(targetRotation * rotationFactor), smoothSpeed * Time.deltaTime);
         lastEulerAngleZ = bikeModel.rotation.eulerAngles.z;
     }

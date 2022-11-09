@@ -13,8 +13,8 @@ public class AIMovement : MonoBehaviour
         targetSpeed = defaultSpeed;
     }
 
-    private void FixedUpdate() {
-        currentSpeed = Mathf.Lerp(currentSpeed, targetSpeed, acceleration * Time.fixedDeltaTime);
-        transform.Translate(Vector3.forward * currentSpeed * Time.fixedDeltaTime);
+    private void Update() {
+        currentSpeed = Mathf.Lerp(currentSpeed, targetSpeed, acceleration * Time.deltaTime);
+        transform.Translate(Vector3.forward * currentSpeed * Time.deltaTime);
     }
 }
