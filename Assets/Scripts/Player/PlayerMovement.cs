@@ -13,16 +13,20 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float swerveSpeed = .35f;
     [SerializeField] private Vector3 targetRotation = new Vector3(0, 3f, 30f);
 
+    Sequence mySequence;
+
     private Transform bikeModel;
     private SwerveInputSystem swerveInputSystem;
 
     private float currentSpeed;
     private float targetSpeed;
 
-    private bool controls = true;
+    private bool controls = false;
 
     private void Start() {
+        Time.timeScale = 1f;
         Application.targetFrameRate = 120;
+        DOTween.SetTweensCapacity(250, 125);
         
         bikeModel = transform.Find("Model");
         swerveInputSystem = GetComponent<SwerveInputSystem>();
@@ -31,6 +35,7 @@ public class PlayerMovement : MonoBehaviour
         EventManager.DeadEvent.AddListener(DecreaseSpeedToZero);
         EventManager.HitEvent.AddListener(StartTemporaryReduction);
         EventManager.JumpEvent.AddListener(StartJump);
+        EventManager.LevelStartEvent.AddListener(ControlsOn);
 
         currentSpeed = defaultSpeed;
         targetSpeed = defaultSpeed;
@@ -64,7 +69,7 @@ public class PlayerMovement : MonoBehaviour
     private void StartJump() { StartCoroutine(Jump()); }
 
     private IEnumerator Jump() {
-        Sequence mySequence = DOTween.Sequence();
+        mySequence = DOTween.Sequence();
         mySequence.Append(bikeModel.DOLocalJump(bikeModel.localPosition, 2f, 1, .5f).SetEase(Ease.OutSine));
         mySequence.Join(bikeModel.DOLocalRotate(Vector3.left * 20f, .1f).SetEase(Ease.OutSine));
 
@@ -80,4 +85,6 @@ public class PlayerMovement : MonoBehaviour
         yield return new WaitForSeconds(1f);
         IncreaseSpeed();
     }
+
+    private void OnDestroy() { mySequence.Kill(); }
 }

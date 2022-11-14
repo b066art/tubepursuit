@@ -3,8 +3,10 @@ using UnityEngine;
 
 public class SpikesR : MonoBehaviour
 {
+    Sequence mySequence;
+
     private void Start() {
-        Sequence mySequence = DOTween.Sequence();
+        mySequence = DOTween.Sequence();
 
         mySequence.AppendInterval(.5f);
         mySequence.Append(transform.DOLocalMove(new Vector3(-0.7f, -1.55f, 0), 1f).SetEase(Ease.InOutSine));
@@ -13,4 +15,6 @@ public class SpikesR : MonoBehaviour
         mySequence.SetLoops(-1);
     }
 
+    private void OnDestroy() { mySequence.Kill(); }
 }
+

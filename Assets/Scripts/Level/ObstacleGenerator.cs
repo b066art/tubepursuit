@@ -8,17 +8,24 @@ public class ObstacleGenerator : MonoBehaviour
     [SerializeField] private Transform playerTransform;
     [SerializeField] private bool[] SegmentNumbers;
     [SerializeField] private int maxRoadLength = 6;
+    [SerializeField] private int delay = 2;
     [SerializeField] private float distanceBetweenSegments = 10f;
     [SerializeField] private float maxPositionZ = 10f;
-    [SerializeField] private Vector3 waitingZone = new Vector3(0, 0, -40);
+    [SerializeField] private Vector3 waitingZone = new Vector3(0, 0, -48);
 
     private List<GameObject> ReadyRoad = new List<GameObject>();
 
     private int currentRoadLength = 0;
-    private bool generatingIsOn = true;
+    private bool firstObstacle = true;
+    private bool generatingIsOn = false;
 
     private int currentSegmentNumber = -1;
     private int lastSegmentNumber = -1;
+
+    private void Start() {
+        EventManager.LevelStartEvent.AddListener(StartGenerating);
+        EventManager.LevelFinishEvent.AddListener(StopGenerating);
+    }
 
     private void FixedUpdate() {
         if (generatingIsOn) {
@@ -40,7 +47,7 @@ public class ObstacleGenerator : MonoBehaviour
                 }
             }
 
-            if (ReadyRoad.Count != 0) { RemoveRoad(); }
+            if (!firstObstacle && ReadyRoad.Count != 0) { RemoveRoad(); }
         }
     }
 
@@ -56,8 +63,14 @@ public class ObstacleGenerator : MonoBehaviour
 
     private void RoadCreation() {
         if (ReadyRoad.Count > 0) {
+            if (firstObstacle) {
+                RoadSegments[currentSegmentNumber].transform.localPosition = ReadyRoad[ReadyRoad.Count - 1].transform.position + Vector3.forward * distanceBetweenSegments * (Mathf.RoundToInt(playerTransform.position.z / maxPositionZ) + delay);
+                RoadSegments[currentSegmentNumber].transform.rotation = Quaternion.Euler(0, 0, Random.Range(0, 360));
+                firstObstacle = false;
+            } else {
             RoadSegments[currentSegmentNumber].transform.localPosition = ReadyRoad[ReadyRoad.Count - 1].transform.position + Vector3.forward * distanceBetweenSegments;
             RoadSegments[currentSegmentNumber].transform.rotation = Quaternion.Euler(0, 0, Random.Range(0, 360));
+            }
         } else if (ReadyRoad.Count == 0) {
             RoadSegments[currentSegmentNumber].transform.localPosition = Vector3.zero;
         }
@@ -68,4 +81,8 @@ public class ObstacleGenerator : MonoBehaviour
         ReadyRoad.Add(RoadSegments[currentSegmentNumber]);
         currentRoadLength++;
     }
+
+    private void StartGenerating() { generatingIsOn = true; }
+
+    private void StopGenerating() { generatingIsOn = false; }
 }
