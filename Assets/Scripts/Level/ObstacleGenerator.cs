@@ -65,11 +65,11 @@ public class ObstacleGenerator : MonoBehaviour
         if (ReadyRoad.Count > 0) {
             if (firstObstacle) {
                 RoadSegments[currentSegmentNumber].transform.localPosition = ReadyRoad[ReadyRoad.Count - 1].transform.position + Vector3.forward * distanceBetweenSegments * (Mathf.RoundToInt(playerTransform.position.z / maxPositionZ) + delay);
-                RoadSegments[currentSegmentNumber].transform.rotation = Quaternion.Euler(0, 0, Random.Range(0, 360));
+                if (RoadSegments[currentSegmentNumber].GetComponent<Obstacle>().rotatable == true) { RoadSegments[currentSegmentNumber].transform.rotation = Quaternion.Euler(0, 0, Random.Range(0, 360)); }
                 firstObstacle = false;
             } else {
             RoadSegments[currentSegmentNumber].transform.localPosition = ReadyRoad[ReadyRoad.Count - 1].transform.position + Vector3.forward * distanceBetweenSegments;
-            RoadSegments[currentSegmentNumber].transform.rotation = Quaternion.Euler(0, 0, Random.Range(0, 360));
+            if (RoadSegments[currentSegmentNumber].GetComponent<Obstacle>().rotatable == true) { RoadSegments[currentSegmentNumber].transform.rotation = Quaternion.Euler(0, 0, Random.Range(0, 360)); }
             }
         } else if (ReadyRoad.Count == 0) {
             RoadSegments[currentSegmentNumber].transform.localPosition = Vector3.zero;
