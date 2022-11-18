@@ -3,19 +3,27 @@ using UnityEngine;
 public class Speedlines : MonoBehaviour
 {
     [SerializeField] private Transform playerTransform;
-    [SerializeField] private float offsetZ;
 
     private ParticleSystem ps;
 
     private void Start() {
         ps = GetComponent<ParticleSystem>();
+
         EventManager.DeadEvent.AddListener(StopAnimation);
+        EventManager.HitEvent.AddListener(TemporarilyStopAnimation);
+
         StartAnimation();
     }
 
-    private void FixedUpdate() { transform.position = new Vector3(0, 0, playerTransform.position.z + offsetZ); }
+    private void FixedUpdate() { transform.localPosition = Vector3.forward * playerTransform.position.z; }
 
     private void StartAnimation() { ps.Play(); }
 
     private void StopAnimation() { ps.Stop(); }
+
+    private void TemporarilyStopAnimation() {
+        StopAnimation();
+        Invoke("StartAnimation", 1f);
+    }
+
 }

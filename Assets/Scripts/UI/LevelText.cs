@@ -1,8 +1,10 @@
+using System.Text;
 using TMPro;
 using UnityEngine;
 
 public class LevelText : MonoBehaviour
 {
+    private StringBuilder outputText = new StringBuilder(15);
     private TMP_Text levelText;
 
     private void Start() {
@@ -17,5 +19,10 @@ public class LevelText : MonoBehaviour
 
     private void ShowText() { levelText.enabled = true; }
 
-    private void UpdateText() { levelText.text = "LEVEL " + CurrentLevel.Instance.GetLevel(); }
+    private void UpdateText() {
+        outputText.Length = 0;
+        outputText.Append("LEVEL ");
+        outputText.Append(CurrentLevel.Instance.GetLevel());
+        levelText.text = outputText.ToString();
+    }
 }

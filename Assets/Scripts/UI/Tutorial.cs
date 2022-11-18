@@ -1,4 +1,3 @@
-using System.Collections;
 using UnityEngine;
 
 public class Tutorial : MonoBehaviour
@@ -16,11 +15,6 @@ public class Tutorial : MonoBehaviour
     private void ShowTutorial() {
         arrow.SetActive(true);
         fingerprint.SetActive(true);
-        StartCoroutine(TimerToHide());
-    }
-
-    private IEnumerator TimerToHide() {
-        yield return new WaitForSeconds(10f);
-        HideTutorial();
+        Invoke("HideTutorial", 10f);
     }
 }

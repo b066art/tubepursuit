@@ -3,13 +3,10 @@ using UnityEngine;
 
 public class BikeWiggle : MonoBehaviour
 {
-    [SerializeField] float amplitudeMax = .15f;
-    private Transform bikeModel;
+    [SerializeField] Transform bikeModel;
+    [SerializeField] float strength = .15f;
 
-    private void Start() {
-        bikeModel = transform.Find("Model");
-        bikeModel.DOShakePosition(1f, new Vector3(Random.Range(-amplitudeMax, amplitudeMax), Random.Range(-amplitudeMax, amplitudeMax), 0), 1, 90f).SetLoops(-1);
-    }
+    private void Start() { bikeModel.DOShakePosition(1f, strength, 1, 90f).SetLoops(-1); }
 
     private void OnDestroy() { bikeModel.DOKill(); }
 }

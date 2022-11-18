@@ -3,10 +3,12 @@ using UnityEngine;
 
 public class GlassCollider : MonoBehaviour
 {
+    [SerializeField] private GameObject fragmentsPrefab;
+
     private void OnTriggerEnter(Collider other) {
         if (other.tag == "Player") {
-            EventManager.GlassBreakEvent.Invoke(transform.position, transform.rotation);
             EventManager.HitEvent.Invoke();
+            GameObject fragments = Instantiate(fragmentsPrefab, transform.position, Quaternion.identity);
             StartCoroutine(HideGlass());
         }
     }

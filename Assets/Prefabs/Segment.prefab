@@ -46,6 +46,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 81a0f87eb5fba8c4baef74b8621d23c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  stripes: {fileID: 2100000, guid: 29b2754d435878f4a934cd62db5bdf3d, type: 2}
   number: 0
 --- !u!1 &4885891452966393667
 GameObject:

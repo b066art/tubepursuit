@@ -13,6 +13,7 @@ public class PlayerCamera : MonoBehaviour
     private void Start() {
         cam = Camera.main;
         defaultPosition = cam.transform.localPosition;
+        
         EventManager.DeadEvent.AddListener(FOVReduce);
         EventManager.HitEvent.AddListener(FOVJump);
     }
@@ -20,26 +21,23 @@ public class PlayerCamera : MonoBehaviour
     private void FOVJump() {
         jumpSequence = DOTween.Sequence();
 
-        jumpSequence.Append(cam.DOFieldOfView(75f, 1f).SetEase(Ease.InOutSine));
+        jumpSequence.Append(cam.DOFieldOfView(70f, 1f).SetEase(Ease.InOutSine));
         jumpSequence.Join(cam.DOShakePosition(.5f, .5f, 10, 0));
         jumpSequence.Append(cam.DOFieldOfView(90f, 1f).SetEase(Ease.InOutSine));
 
-        StartCoroutine(ResetPosition());
+        Invoke("ResetPosition", .5f);
     }
 
     private void FOVReduce() {
         reduceSequence = DOTween.Sequence();
 
-        reduceSequence.Append(cam.DOFieldOfView(75f, 1f).SetEase(Ease.InOutSine));
+        reduceSequence.Append(cam.DOFieldOfView(70f, 1f).SetEase(Ease.InOutSine));
         reduceSequence.Join(cam.DOShakePosition(.5f, .5f, 10, 0));
 
-        StartCoroutine(ResetPosition());
+        Invoke("ResetPosition", .5f);
     }
 
-    private IEnumerator ResetPosition() {
-        yield return new WaitForSeconds(.5f);
-        cam.transform.localPosition = defaultPosition;
-    }
+    private void ResetPosition() { cam.transform.localPosition = defaultPosition; }
 
     private void OnDestroy() {
         jumpSequence.Kill();

@@ -5,6 +5,8 @@ using UnityEngine;
 [RequireComponent (typeof (SwerveInputSystem))]
 public class PlayerMovement : MonoBehaviour
 {
+    [SerializeField] Transform bikeModel;
+
     [SerializeField] private float acceleration;
     [SerializeField] private float defaultSpeed;
     [SerializeField] private float reduceFactor;
@@ -13,9 +15,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float swerveSpeed = .35f;
     [SerializeField] private Vector3 targetRotation = new Vector3(0, 3f, 30f);
 
-    Sequence mySequence;
-
-    private Transform bikeModel;
+    private Sequence mySequence;
     private SwerveInputSystem swerveInputSystem;
 
     private float currentSpeed;
@@ -28,13 +28,12 @@ public class PlayerMovement : MonoBehaviour
         Application.targetFrameRate = 120;
         DOTween.SetTweensCapacity(250, 125);
         
-        bikeModel = transform.Find("Model");
         swerveInputSystem = GetComponent<SwerveInputSystem>();
 
         EventManager.DeadEvent.AddListener(ControlsOff);
         EventManager.DeadEvent.AddListener(DecreaseSpeedToZero);
-        EventManager.HitEvent.AddListener(StartTemporaryReduction);
-        EventManager.JumpEvent.AddListener(StartJump);
+        EventManager.HitEvent.AddListener(TemporaryReduction);
+        EventManager.JumpEvent.AddListener(Jump);
         EventManager.LevelStartEvent.AddListener(ControlsOn);
 
         currentSpeed = defaultSpeed;
@@ -66,24 +65,18 @@ public class PlayerMovement : MonoBehaviour
         bikeModel.localRotation = Quaternion.RotateTowards(bikeModel.localRotation, Quaternion.Euler(targetRotation * rotationFactor), smoothSpeed * Time.deltaTime);
     }
 
-    private void StartJump() { StartCoroutine(Jump()); }
-
-    private IEnumerator Jump() {
+    private void Jump() {
         mySequence = DOTween.Sequence();
         mySequence.Append(bikeModel.DOLocalJump(bikeModel.localPosition, 2f, 1, .5f).SetEase(Ease.OutSine));
         mySequence.Join(bikeModel.DOLocalRotate(Vector3.left * 20f, .1f).SetEase(Ease.OutSine));
 
         ControlsOff();
-        yield return new WaitForSeconds(.5f);
-        ControlsOn();
+        Invoke("ControlsOn", .5f);
     }
 
-    private void StartTemporaryReduction() { StartCoroutine(TemporaryReduction()); }
-
-    private IEnumerator TemporaryReduction() {
+    private void TemporaryReduction() {
         DecreaseSpeed();
-        yield return new WaitForSeconds(1f);
-        IncreaseSpeed();
+        Invoke("IncreaseSpeed", 1f);
     }
 
     private void OnDestroy() { mySequence.Kill(); }
