@@ -5,18 +5,22 @@ public class BoxCollider : MonoBehaviour
 {
     [SerializeField] private GameObject splintersPrefab;
 
+    private MeshRenderer[] meshes = new MeshRenderer[3];
+
+    private void Start() { meshes = GetComponentsInChildren<MeshRenderer>(); }
+
     private void OnTriggerEnter(Collider other) {
         if (other.tag == "Player") {
             EventManager.HitEvent.Invoke();
             GameObject fragments = Instantiate(splintersPrefab, transform.position, Quaternion.identity);
-            StartCoroutine(HideBox());
+            HideBox();
         }
     }
 
-    private IEnumerator HideBox() {
-        MeshRenderer[] meshes = GetComponentsInChildren<MeshRenderer>();
-        foreach (MeshRenderer mesh in meshes) { mesh.enabled = false; }
-        yield return new WaitForSeconds(1f);
-        foreach (MeshRenderer mesh in meshes) { mesh.enabled = true; }
+    private void HideBox() {
+        for (int i = 0; i < meshes.Length; i++) { meshes[i].enabled = false; }
+        Invoke("ShowBox", 1f);
     }
+
+    private void ShowBox() { for (int i = 0; i < meshes.Length; i++) { meshes[i].enabled = true; }}
 }

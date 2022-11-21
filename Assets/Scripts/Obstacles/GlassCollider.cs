@@ -5,17 +5,22 @@ public class GlassCollider : MonoBehaviour
 {
     [SerializeField] private GameObject fragmentsPrefab;
 
+    private MeshRenderer meshRenderer;
+
+    private void Start() { meshRenderer = GetComponentInParent<MeshRenderer>(); }
+
     private void OnTriggerEnter(Collider other) {
         if (other.tag == "Player") {
             EventManager.HitEvent.Invoke();
             GameObject fragments = Instantiate(fragmentsPrefab, transform.position, Quaternion.identity);
-            StartCoroutine(HideGlass());
+            HideGlass();
         }
     }
 
-    private IEnumerator HideGlass() {
-        GetComponentInParent<MeshRenderer>().enabled = false;
-        yield return new WaitForSeconds(1f);
-        GetComponentInParent<MeshRenderer>().enabled = true;
+    private void HideGlass() {
+        meshRenderer.enabled = false;
+        Invoke("ShowGlass", 1f);
     }
+
+    private void ShowGlass() { meshRenderer.enabled = true; }
 }

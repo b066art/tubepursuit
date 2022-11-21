@@ -6,9 +6,9 @@ public class Fingerprint : MonoBehaviour
     RectTransform rT;
     Sequence mySequence;
 
-    private void Start() {
+    private void OnEnable() {
         rT = GetComponent<RectTransform>();
-        EventManager.LevelStartEvent.AddListener(StartTutorial);
+        StartTutorial();
     }
 
     private void StartTutorial() {
@@ -20,6 +20,8 @@ public class Fingerprint : MonoBehaviour
         mySequence.Append(rT.DOAnchorPosX(0, 1f).SetEase(Ease.InOutQuad));
         mySequence.SetLoops(-1);
     }
+
+    private void OnDisable() { mySequence.Kill(); }
 
     private void OnDestroy() { mySequence.Kill(); }
 }

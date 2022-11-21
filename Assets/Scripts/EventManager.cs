@@ -10,4 +10,6 @@ public class EventManager : MonoBehaviour
     public static UnityEvent LevelFinishEvent = new UnityEvent();
     public static UnityEvent LevelStartEvent = new UnityEvent();
     public static UnityEvent NewLevelEvent = new UnityEvent();
+    public static UnityEvent PausedEvent = new UnityEvent();
+    public static UnityEvent UnpausedEvent = new UnityEvent();
 }

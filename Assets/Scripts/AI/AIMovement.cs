@@ -22,13 +22,12 @@ public class AIMovement : MonoBehaviour
         transform.Translate(Vector3.forward * currentSpeed * Time.deltaTime);
     }
 
-    private void StartSpeed() { StartCoroutine(IncreaseSpeed()); }
+    private void StartSpeed() { IncreaseSpeed(); }
 
-    private IEnumerator IncreaseSpeed() {
+    private void IncreaseSpeed() {
         currentSpeed = defaultSpeed;
         targetSpeed = defaultSpeed * speedFactor;
-        yield return new WaitForSeconds(3f);
-        DefaultSpeed();
+        Invoke("DefaultSpeed", 3f);
     }
 
     private void DefaultSpeed() { targetSpeed = defaultSpeed; }
