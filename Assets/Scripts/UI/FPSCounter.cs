@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 public class FPSCounter : MonoBehaviour
 {
+    public static FPSCounter Instance;
+
     [SerializeField] private Toggle toggleFPS;
 
     private TMP_Text fpsText;
@@ -17,7 +19,12 @@ public class FPSCounter : MonoBehaviour
 
     private bool showFPS = false;
 
-    private void Start() { fpsText = GetComponent<TMP_Text>(); }
+    private void Awake() { Instance = this; }
+
+    private void Start() {
+        showFPS = SettingsMenu.Instance.fps;
+        fpsText = GetComponent<TMP_Text>();
+    }
 
     private void Update() {
         if (showFPS) {
@@ -37,7 +44,7 @@ public class FPSCounter : MonoBehaviour
     }
 
     public void ChangeState() {
-        showFPS = toggleFPS.isOn;
+        showFPS = SettingsMenu.Instance.fps;
         fpsText.text = null;
     } 
 }
