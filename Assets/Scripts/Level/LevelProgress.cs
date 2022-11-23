@@ -2,36 +2,23 @@ using UnityEngine;
 
 public class LevelProgress : MonoBehaviour
 {
-    [SerializeField] GameObject progressBar;
-    [SerializeField] private int levelTime = 60;
+    [SerializeField] LevelProgressBar levelProgressBar;
+    [SerializeField] Transform playerTransform;
+    [SerializeField] Transform enemyTransform;
 
-    private LevelProgressBar levelProgressBar;
+    [SerializeField] private int levelDistance = 1800;
 
-    private float timer = 0;
+    private float startPositionZ;
 
-    private bool timerIsStarted = false;
-
-    private void Start() { EventManager.LevelStartEvent.AddListener(StartTimer); }
+    private void Start() { EventManager.LevelStartEvent.AddListener(StartLevel); }
 
     private void Update() {
-        if (timerIsStarted) {
-            timer += Time.deltaTime;
-            levelProgressBar.UpdateProgress(timer / levelTime);
-            if (timer >= levelTime) {
-                timerIsStarted = false;
-                HideBar();
-                EventManager.DeadEvent.Invoke();
-            }
-        }
+        levelProgressBar.UpdateBar((playerTransform.position.z - startPositionZ) / levelDistance, (enemyTransform.position.z - startPositionZ) / levelDistance);
+        if (playerTransform.position.z - startPositionZ >= levelDistance) { EventManager.DeadEvent.Invoke(); }
     }
 
-    private void StartTimer() {
-        timerIsStarted = true;
-        ShowBar();
-        levelProgressBar = progressBar.GetComponent<LevelProgressBar>();
+    private void StartLevel() {
+        startPositionZ = playerTransform.position.z;
     }
 
-    private void HideBar() { progressBar.SetActive(false); }
-
-    private void ShowBar() { progressBar.SetActive(true); }
 }
