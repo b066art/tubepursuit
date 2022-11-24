@@ -25,8 +25,8 @@ public class PlayerMovement : MonoBehaviour
 
     private void Start() {
         Time.timeScale = 1f;
-        Application.targetFrameRate = 120;
-        DOTween.SetTweensCapacity(250, 125);
+        //Application.targetFrameRate = 120;
+        //DOTween.SetTweensCapacity(250, 125);
         
         swerveInputSystem = GetComponent<SwerveInputSystem>();
 

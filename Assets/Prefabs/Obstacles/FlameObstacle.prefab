@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4570060571905118781}
   - component: {fileID: 9150481487220231489}
   - component: {fileID: 3949760835742666704}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Collider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -68,7 +68,7 @@ GameObject:
   - component: {fileID: 9211759273132942394}
   - component: {fileID: 1129147849898542372}
   - component: {fileID: 7419621395369929865}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: FlameAdd
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4872,7 +4872,7 @@ GameObject:
   - component: {fileID: 6564113005914534502}
   - component: {fileID: 5458847931215888265}
   - component: {fileID: 8516184010654257437}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Flame (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9679,7 +9679,7 @@ GameObject:
   - component: {fileID: 2251843949656962543}
   - component: {fileID: 7142477545389420582}
   - component: {fileID: 4709348118361089568}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Collider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9736,7 +9736,7 @@ GameObject:
   - component: {fileID: 8291450256770015506}
   - component: {fileID: 6416727367214193107}
   - component: {fileID: 8435241739799548329}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: FlameAdd
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14540,7 +14540,7 @@ GameObject:
   - component: {fileID: 3497772288318771487}
   - component: {fileID: 1702673431215771378}
   - component: {fileID: 637486197354847420}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Flame (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -19347,7 +19347,7 @@ GameObject:
   - component: {fileID: 7977834925533373938}
   - component: {fileID: 7977834925533373936}
   - component: {fileID: 7977834925533373937}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: FlameAdd
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -24151,7 +24151,7 @@ GameObject:
   - component: {fileID: 7977834925852562145}
   - component: {fileID: 7977834925852562151}
   - component: {fileID: 7977834925852562144}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Flame
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -28957,7 +28957,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7977834926609080694}
   - component: {fileID: -7120731837013153244}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: FlameObstacle
   m_TagString: Obstacle
   m_Icon: {fileID: 0}
@@ -28993,6 +28993,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33665f770592c1e4aade0c67058f6141, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rotatable: 1
+  difficulty: 2
   number: 0
 --- !u!1 &8493267460601441851
 GameObject:
@@ -29005,7 +29007,7 @@ GameObject:
   - component: {fileID: 5473521788737796866}
   - component: {fileID: 2659202874844523005}
   - component: {fileID: 1226748378955656111}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Collider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -29110,6 +29112,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Nozzle
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: e894c29db500e6a47a3bbe486b294ec6, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e894c29db500e6a47a3bbe486b294ec6, type: 3}
 --- !u!4 &3528239743373294428 stripped
@@ -29176,6 +29182,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Nozzle
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: e894c29db500e6a47a3bbe486b294ec6, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e894c29db500e6a47a3bbe486b294ec6, type: 3}
 --- !u!4 &6701405888677312095 stripped
@@ -29241,6 +29251,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: e894c29db500e6a47a3bbe486b294ec6, type: 3}
       propertyPath: m_Name
       value: Nozzle
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: e894c29db500e6a47a3bbe486b294ec6, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e894c29db500e6a47a3bbe486b294ec6, type: 3}

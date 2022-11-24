@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5304606826987234950}
   - component: {fileID: 9010938709673069454}
   - component: {fileID: 1632248960986641932}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: DeadZone
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -68,7 +68,7 @@ GameObject:
   - component: {fileID: 3564902975081053641}
   - component: {fileID: 6330015256023796742}
   - component: {fileID: 2249617830115116900}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: EdgeCollider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -124,9 +124,9 @@ GameObject:
   m_Component:
   - component: {fileID: 2179073916321217398}
   - component: {fileID: 898365404042668077}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: GateHard
-  m_TagString: Untagged
+  m_TagString: Obstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -161,6 +161,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rotatable: 1
+  difficulty: 7
   number: 0
 --- !u!1 &1829092935880109680
 GameObject:
@@ -171,7 +172,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 271972586014487971}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: GatesFrames
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -203,7 +204,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5731697079960266793}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Colliders
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -240,7 +241,7 @@ GameObject:
   - component: {fileID: 7715912460416403583}
   - component: {fileID: 2752898726077087340}
   - component: {fileID: 487270907470078040}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: DeadZone
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -297,7 +298,7 @@ GameObject:
   - component: {fileID: 7331658765054835290}
   - component: {fileID: 2666048736410189862}
   - component: {fileID: 7276625411798957585}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Frame
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -378,7 +379,7 @@ GameObject:
   - component: {fileID: 8501521764924924409}
   - component: {fileID: 5740687020112247579}
   - component: {fileID: 353714138669964910}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Elements
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -459,7 +460,7 @@ GameObject:
   - component: {fileID: 8806293491778188618}
   - component: {fileID: 690623992517866160}
   - component: {fileID: 5686302825542075702}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: GatesDoors
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -540,7 +541,7 @@ GameObject:
   - component: {fileID: 2784581291206126841}
   - component: {fileID: 3760738443910278197}
   - component: {fileID: 164089154771939170}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: DeadZone
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -597,7 +598,7 @@ GameObject:
   - component: {fileID: 5142847374767346962}
   - component: {fileID: 3012036108751853556}
   - component: {fileID: 6318134719150387119}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: EdgeCollider
   m_TagString: Untagged
   m_Icon: {fileID: 0}

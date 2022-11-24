@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4006760041049246173}
   - component: {fileID: 2296875110526946320}
   - component: {fileID: 136944156357460668}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: EdgeCollider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -67,9 +67,9 @@ GameObject:
   m_Component:
   - component: {fileID: 3378397362121264536}
   - component: {fileID: -3334115330387622680}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: GateEasy
-  m_TagString: Untagged
+  m_TagString: Obstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -104,6 +104,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rotatable: 1
+  difficulty: 3
   number: 0
 --- !u!1 &4425075142136461335
 GameObject:
@@ -114,7 +115,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 394696585731520310}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Colliders
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -149,7 +150,7 @@ GameObject:
   - component: {fileID: 252905181426642179}
   - component: {fileID: 3501677399897813378}
   - component: {fileID: 2758151002606815660}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Elements
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -230,7 +231,7 @@ GameObject:
   - component: {fileID: 7587903424267301803}
   - component: {fileID: 619433077075383444}
   - component: {fileID: 960078508867156283}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: EdgeCollider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -287,7 +288,7 @@ GameObject:
   - component: {fileID: 1728298695658081487}
   - component: {fileID: 1830039622957576373}
   - component: {fileID: 2700009625014412006}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: EdgeCollider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -344,7 +345,7 @@ GameObject:
   - component: {fileID: 445557005667552600}
   - component: {fileID: 5961791615059870581}
   - component: {fileID: 1544454964727478829}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Frame
   m_TagString: Untagged
   m_Icon: {fileID: 0}
