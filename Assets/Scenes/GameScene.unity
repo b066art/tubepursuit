@@ -62920,6 +62920,7 @@ GameObject:
   - component: {fileID: 1166471158}
   - component: {fileID: 1166471159}
   - component: {fileID: 1166471160}
+  - component: {fileID: 1166471161}
   m_Layer: 0
   m_Name: Level
   m_TagString: Untagged
@@ -62973,6 +62974,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4dc052e8749d66d4c98518721d99f175, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1166471161
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1166471157}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3d5b8c601900108458e8092027d679b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1001 &1170461936
@@ -67368,8 +67381,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   acceleration: 10
   defaultSpeed: 38
-  startSpeed: 50
-  speedFactor: 1.5
+  startSpeed: 40
+  speedFactor: 2.5
 --- !u!4 &1358205476
 Transform:
   m_ObjectHideFlags: 0
@@ -91920,8 +91933,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   acceleration: 10
   defaultSpeed: 37
-  startSpeed: 45
-  speedFactor: 1.5
+  startSpeed: 40
+  speedFactor: 2
 --- !u!4 &1782409114
 Transform:
   m_ObjectHideFlags: 0
