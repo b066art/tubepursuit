@@ -7,13 +7,15 @@ public class PlayerCamera : MonoBehaviour
     private Camera cam;
     private Vector3 defaultPosition;
 
+    Sequence boostSequence;
     Sequence jumpSequence;
     Sequence reduceSequence;
 
     private void Start() {
         cam = Camera.main;
         defaultPosition = cam.transform.localPosition;
-        
+
+        EventManager.BoostEvent.AddListener(FOVIncrease);
         EventManager.DeadEvent.AddListener(FOVReduce);
         EventManager.HitEvent.AddListener(FOVJump);
     }
@@ -28,6 +30,15 @@ public class PlayerCamera : MonoBehaviour
         Invoke("ResetPosition", .5f);
     }
 
+    private void FOVIncrease() {
+        cam.DOFieldOfView(110f, .5f).SetEase(Ease.InOutSine);
+        Invoke("FOVDefault", 2.5f);
+    }
+
+    private void FOVDefault() {
+        boostSequence.Append(cam.DOFieldOfView(90f, .5f).SetEase(Ease.InOutSine));
+    }
+
     private void FOVReduce() {
         reduceSequence = DOTween.Sequence();
 
@@ -40,6 +51,8 @@ public class PlayerCamera : MonoBehaviour
     private void ResetPosition() { cam.transform.localPosition = defaultPosition; }
 
     private void OnDestroy() {
+        transform.DOKill();
+        boostSequence.Kill();
         jumpSequence.Kill();
         reduceSequence.Kill();
     }

@@ -9,13 +9,11 @@ public class Difficulty : MonoBehaviour
     private int obstacleMinLevel = 1;
     private int obstacleMaxLevel = 12;
 
-    private int currentLevel = 59;
+    private int currentLevel = 36;
 
     private void Start() {
         FindMinLevel();
-        Debug.Log(obstacleMinLevel);
         GenerateArray();
-        for (int i = 0; i < obstacles.Length; i++) { Debug.Log(obstacles[i]); }
     }
 
     private void FindMinLevel() {
@@ -42,15 +40,21 @@ public class Difficulty : MonoBehaviour
 
         else if (obstacleMinLevel + obstacles.Length > obstacleMaxLevel) {
 
-            for (int i = 0; i < obstacles.Length - 1; i++) { obstacles[i] = obstacleMinLevel + i - 1; }
-            obstacles[obstacles.Length - 1] = obstacles[obstacles.Length - 2];
+            for (int i = 0; i < obstacles.Length; i++) {
+                int n = obstacleMinLevel + i - 1;
+                if (n > obstacleMaxLevel) { n = obstacleMaxLevel; }
+                obstacles[i] = n;
+            }
 
-            /*for (int i = 0; i < obstacles.Length - 1; i++) {
-                for (int n = 0; n < obstacles.Length - i; n++) {
+            while (obstacles.Sum() != obstacleMaxLevel * obstacles.Length) {
+                for (int i = 0; i < obstacles.Length; i++) {
+                    obstacles[i]++;
+                    if (obstacles[i] > obstacleMaxLevel) { obstacles[i] = obstacleMaxLevel; }
                     if (obstacles.Sum() == currentLevel + obstacles.Length - 1) { break; }
-                    obstacles[n] = i + 1;
                 }
-            }*/
+
+                if (obstacles.Sum() == currentLevel + obstacles.Length - 1) { break; }
+            }
         }
 
         else {

@@ -3,6 +3,7 @@ using UnityEngine.Events;
 
 public class EventManager : MonoBehaviour
 {
+    public static UnityEvent BoostEvent = new UnityEvent();
     public static UnityEvent DeadEvent = new UnityEvent();
     public static UnityEvent<Vector3, Quaternion> GlassBreakEvent = new UnityEvent<Vector3, Quaternion>();
     public static UnityEvent HitEvent = new UnityEvent();

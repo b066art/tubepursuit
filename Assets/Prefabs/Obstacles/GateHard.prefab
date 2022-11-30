@@ -161,7 +161,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rotatable: 1
-  difficulty: 7
+  difficulty: 6
   number: 0
 --- !u!1 &1829092935880109680
 GameObject:

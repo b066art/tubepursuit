@@ -374,5 +374,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rotatable: 1
-  difficulty: 6
+  difficulty: 7
   number: 0

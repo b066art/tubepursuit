@@ -8,9 +8,14 @@ public class CurrentLevel : MonoBehaviour
 
     private void Awake() { Instance = this; }
 
+    private void Start() { EventManager.LevelFinishEvent.AddListener(IncreaseLevel); }
+    
     public int GetLevel() { return currentLevel; }
 
-    private void IncreaseLevel() { currentLevel++; }
+    private void IncreaseLevel() {
+        currentLevel++;
+        Debug.Log(currentLevel);
+        }
 
     public void SetLevel(int level) { currentLevel = level; }
 }

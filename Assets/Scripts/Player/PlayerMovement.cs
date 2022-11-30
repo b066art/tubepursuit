@@ -30,6 +30,7 @@ public class PlayerMovement : MonoBehaviour
         
         swerveInputSystem = GetComponent<SwerveInputSystem>();
 
+        EventManager.BoostEvent.AddListener(TemporaryBoost);
         EventManager.DeadEvent.AddListener(ControlsOff);
         EventManager.DeadEvent.AddListener(DecreaseSpeedToZero);
         EventManager.HitEvent.AddListener(TemporaryReduction);
@@ -52,6 +53,8 @@ public class PlayerMovement : MonoBehaviour
 
     private void ControlsOff() { controls = false; }
 
+    private void BoostSpeed() { targetSpeed = defaultSpeed / reduceFactor; }
+
     private void DecreaseSpeed() { targetSpeed = defaultSpeed * reduceFactor; }
 
     private void DecreaseSpeedToZero() { targetSpeed = 0; }
@@ -72,6 +75,11 @@ public class PlayerMovement : MonoBehaviour
 
         ControlsOff();
         Invoke("ControlsOn", .5f);
+    }
+
+    private void TemporaryBoost() {
+        BoostSpeed();
+        Invoke("IncreaseSpeed", 3f);
     }
 
     private void TemporaryReduction() {
