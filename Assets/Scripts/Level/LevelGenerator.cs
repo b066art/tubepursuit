@@ -23,8 +23,8 @@ public class LevelGenerator : MonoBehaviour
     private bool isEnabled = false;
 
     private void Start() {
-        Invoke("GetPaths", 3f);
-        Invoke("GenerateLevel", 4f);
+        Invoke("GetPaths", 0.5f);
+        Invoke("GenerateLevel", 0.5f);
     }
 
     private void FixedUpdate() { if (isEnabled) { if (playerTransform.position.z - level.GetChild(0).position.z > maxPositionZ) { MoveSegment(); }}}
