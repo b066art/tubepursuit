@@ -1,19 +1,9 @@
 fileFormatVersion: 2
-guid: 707106d0b09a68843b61c5efb63459a3
+guid: d743b21c0122f274ea7928202087e147
 ModelImporter:
   serializedVersion: 20300
   internalIDToNameTable: []
-  externalObjects:
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Stripe
-    second: {fileID: 2100000, guid: 29b2754d435878f4a934cd62db5bdf3d, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Tube1
-    second: {fileID: 2100000, guid: 8a0150a8d84f5624189c02434aed32dd, type: 2}
+  externalObjects: {}
   materials:
     materialImportMode: 2
     materialName: 0

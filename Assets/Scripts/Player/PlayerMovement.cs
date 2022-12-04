@@ -24,10 +24,6 @@ public class PlayerMovement : MonoBehaviour
     private bool controls = false;
 
     private void Start() {
-        Time.timeScale = 1f;
-        //Application.targetFrameRate = 120;
-        //DOTween.SetTweensCapacity(250, 125);
-        
         swerveInputSystem = GetComponent<SwerveInputSystem>();
 
         EventManager.BoostEvent.AddListener(TemporaryBoost);

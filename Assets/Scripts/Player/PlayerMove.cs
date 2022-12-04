@@ -30,7 +30,6 @@ public class PlayerMove : MonoBehaviour
         EventManager.LevelStartEvent.AddListener(ControlsOn);
         EventManager.DeadEvent.AddListener(ControlsOff);
 
-        Time.timeScale = 1f;
         Invoke("GetPaths", 0.5f);
         Invoke("EnableMovement", 0.5f);
     }
