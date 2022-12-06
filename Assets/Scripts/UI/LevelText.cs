@@ -9,7 +9,6 @@ public class LevelText : MonoBehaviour
 
     private void Start() {
         levelText = GetComponent<TMP_Text>();
-        EventManager.LevelFinishEvent.AddListener(ShowText);
         EventManager.LevelStartEvent.AddListener(HideText);
         EventManager.NewLevelEvent.AddListener(UpdateText);
         UpdateText();

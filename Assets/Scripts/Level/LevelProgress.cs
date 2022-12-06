@@ -20,7 +20,6 @@ public class LevelProgress : MonoBehaviour
         levelProgressBar.UpdateBar((playerTransform.position.z - startPositionZ) / levelDistance, (enemy1Transform.position.z - startPositionZ) / levelDistance, (enemy2Transform.position.z - startPositionZ) / levelDistance, (enemy3Transform.position.z - startPositionZ) / levelDistance);
         if (playerTransform.position.z - startPositionZ >= levelDistance && !levelFinished) {
             levelFinished = true;
-            EventManager.DeadEvent.Invoke();
             EventManager.LevelFinishEvent.Invoke();
         }
     }

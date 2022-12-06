@@ -33,6 +33,8 @@ public class PathGenerator : MonoBehaviour
 
             previousPath = path.GetComponent<Path>();
         }
+        
+        EventManager.PathReadyEvent.Invoke();
     }
 
     private void MoveSegment() {

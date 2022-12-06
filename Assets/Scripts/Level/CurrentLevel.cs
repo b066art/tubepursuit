@@ -12,10 +12,7 @@ public class CurrentLevel : MonoBehaviour
     
     public int GetLevel() { return currentLevel; }
 
-    private void IncreaseLevel() {
-        currentLevel++;
-        Debug.Log(currentLevel);
-        }
+    private void IncreaseLevel() { currentLevel++; }
 
     public void SetLevel(int level) { currentLevel = level; }
 }

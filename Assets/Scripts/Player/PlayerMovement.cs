@@ -1,61 +1,55 @@
-using DG.Tweening;
-using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent (typeof (SwerveInputSystem))]
 public class PlayerMovement : MonoBehaviour
 {
+    [SerializeField] Transform playerModel;
     [SerializeField] Transform bikeModel;
-
-    [SerializeField] private float acceleration;
-    [SerializeField] private float defaultSpeed;
-    [SerializeField] private float reduceFactor;
+    [SerializeField] private Transform levelPath;
 
     [SerializeField] private float smoothSpeed = 35f;
     [SerializeField] private float swerveSpeed = .35f;
     [SerializeField] private Vector3 targetRotation = new Vector3(0, 3f, 30f);
 
-    private Sequence mySequence;
+    private List<Path> paths = new List<Path>();
+
+    private Path currentPath;
     private SwerveInputSystem swerveInputSystem;
 
-    private float currentSpeed;
-    private float targetSpeed;
-
+    private bool isEnabled = false;
     private bool controls = false;
 
-    private void Start() {
-        swerveInputSystem = GetComponent<SwerveInputSystem>();
+    [SerializeField] private float speed;
 
-        EventManager.BoostEvent.AddListener(TemporaryBoost);
+    private float p = 0;
+    private int s = 0;
+    private float t = 0;
+
+    private void Awake() {
+        EventManager.PathReadyEvent.AddListener(EnableMovement);
+        EventManager.LevelStartEvent.AddListener(EnableControls);
         EventManager.DeadEvent.AddListener(ControlsOff);
-        EventManager.DeadEvent.AddListener(DecreaseSpeedToZero);
-        EventManager.HitEvent.AddListener(TemporaryReduction);
-        EventManager.JumpEvent.AddListener(Jump);
-        EventManager.LevelStartEvent.AddListener(ControlsOn);
-
-        currentSpeed = defaultSpeed;
-        targetSpeed = defaultSpeed;
     }
+
+    private void Start() { swerveInputSystem = GetComponent<SwerveInputSystem>(); }
 
     private void Update() {
-        currentSpeed = Mathf.Lerp(currentSpeed, targetSpeed, acceleration * Time.deltaTime);
-        transform.Translate(Vector3.forward * currentSpeed * Time.deltaTime);
+        if (isEnabled) {
+            p += speed * Time.deltaTime;
+            s = Mathf.RoundToInt(Mathf.Floor(p));
 
-        if (controls) { transform.RotateAround(transform.position, Vector3.forward, swerveInputSystem.MoveFactorX * swerveSpeed); }
+            if (s != 0) { t = p % s; }
+            else { t = p; }
+
+            transform.position = Bezier.GetPoint(paths[s].p0.position, paths[s].p1.position, paths[s].p2.position, paths[s].p3.position, t);
+            transform.rotation = Quaternion.LookRotation(Bezier.GetFirstDerivative(paths[s].p0.position, paths[s].p1.position, paths[s].p2.position, paths[s].p3.position, t));
+        }
+
+        if (controls) {
+            playerModel.Rotate(0f, 0f, swerveInputSystem.MoveFactorX * swerveSpeed);
+        }
         RotateModel();
     }
-
-    private void ControlsOn() { controls = true; }
-
-    private void ControlsOff() { controls = false; }
-
-    private void BoostSpeed() { targetSpeed = defaultSpeed / reduceFactor; }
-
-    private void DecreaseSpeed() { targetSpeed = defaultSpeed * reduceFactor; }
-
-    private void DecreaseSpeedToZero() { targetSpeed = 0; }
-
-    private void IncreaseSpeed() { targetSpeed = defaultSpeed; }
 
     private void RotateModel() {
         float rotationFactor;
@@ -64,24 +58,19 @@ public class PlayerMovement : MonoBehaviour
         bikeModel.localRotation = Quaternion.RotateTowards(bikeModel.localRotation, Quaternion.Euler(targetRotation * rotationFactor), smoothSpeed * Time.deltaTime);
     }
 
-    private void Jump() {
-        mySequence = DOTween.Sequence();
-        mySequence.Append(bikeModel.DOLocalJump(bikeModel.localPosition, 2f, 1, .5f).SetEase(Ease.OutSine));
-        mySequence.Join(bikeModel.DOLocalRotate(Vector3.left * 20f, .1f).SetEase(Ease.OutSine));
-
-        ControlsOff();
-        Invoke("ControlsOn", .5f);
+    private void GetPaths() {
+        paths.Clear();
+        for (int i = 0; i < PathGenerator.Instance.pathLength; i++) { paths.Add(levelPath.GetChild(i).GetComponent<Path>()); }
     }
 
-    private void TemporaryBoost() {
-        BoostSpeed();
-        Invoke("IncreaseSpeed", 3f);
+    private void EnableMovement() {
+        GetPaths();
+        isEnabled = true;
     }
 
-    private void TemporaryReduction() {
-        DecreaseSpeed();
-        Invoke("IncreaseSpeed", 1f);
-    }
+    private void EnableControls() { Invoke("ControlsOn", 1f); }
 
-    private void OnDestroy() { mySequence.Kill(); }
+    private void ControlsOn() { controls = true; }
+
+    private void ControlsOff() { controls = false; }
 }

@@ -3,38 +3,38 @@ using UnityEngine;
 
 public class AIRotation : MonoBehaviour
 {
-    [SerializeField] private float smoothSpeed = 30f;
-    [SerializeField] private Vector3 targetRotation = new Vector3(0, 3f, 6f);
+    [SerializeField] private Transform obstacles;
 
-    private Transform bikeModel;
+    private Transform enemyModel;
     private Transform closestObstacle;
 
     private float rotationAngle = 0;
-    private float lastEulerAngleZ = 0;
     private float lastDistance = 9999;
 
-    private bool levelStarted = false;
+    private Quaternion nextRotation;
+
+    private bool isEnabled = false;
     private bool obstacleIsFound = false;
 
     private void Start() {
-        bikeModel = transform.Find("Model");
         EventManager.LevelStartEvent.AddListener(StartRotation);
+        enemyModel = transform.Find("EnemyModel");
     }
 
     private void Update() {
-        if (levelStarted && !obstacleIsFound) { FindClosestObstacle(); }
+        if (isEnabled && !obstacleIsFound) { FindClosestObstacle(); }
 
-        if (levelStarted && obstacleIsFound) {
+        if (isEnabled && obstacleIsFound) {
             if (closestObstacle.transform.position.z - transform.position.z <= 0) { obstacleIsFound = false; }
 
-            transform.rotation = Quaternion.RotateTowards(transform.rotation, closestObstacle.rotation, rotationAngle * Time.deltaTime);
-            //RotateModel();
+            nextRotation = Quaternion.Euler(Vector3.forward * rotationAngle);
+            enemyModel.localRotation = Quaternion.RotateTowards(enemyModel.localRotation, nextRotation, 1f);
         }
     }
 
     private float CalculateAngle() {
-        float enemyAngle = 360 - transform.rotation.eulerAngles.z;
-        float obstacleAngle = 360 - closestObstacle.rotation.eulerAngles.z;
+        float enemyAngle = transform.localRotation.eulerAngles.z;
+        float obstacleAngle = closestObstacle.localRotation.eulerAngles.z;
 
         if (Mathf.Abs(obstacleAngle - enemyAngle) > Mathf.Abs(enemyAngle - obstacleAngle)) { return Mathf.Abs(obstacleAngle - enemyAngle); }
         else { return Mathf.Abs(enemyAngle - obstacleAngle); }
@@ -42,13 +42,12 @@ public class AIRotation : MonoBehaviour
 
     private void FindClosestObstacle() {
         closestObstacle = null;
-        GameObject[] obstacles = GameObject.FindGameObjectsWithTag("Obstacle");
 
-        foreach (GameObject obstacle in obstacles) {
-            float distance = Vector3.Distance(transform.position, obstacle.transform.position);
+        for (int i = 0; i < obstacles.childCount; i++) {
+            float distance = Vector3.Distance(transform.position, obstacles.GetChild(i).position);
 
-            if (distance < lastDistance && obstacle.transform.position.z - transform.position.z > 0) {
-                closestObstacle = obstacle.transform;
+            if (distance < lastDistance && obstacles.GetChild(i).position.z - transform.position.z > 0) {
+                closestObstacle = obstacles.GetChild(i);
                 lastDistance = distance;
             }
         }
@@ -59,16 +58,7 @@ public class AIRotation : MonoBehaviour
         }
     }
 
-    private void RotateModel() {
-        float rotationFactor = Mathf.Clamp((lastEulerAngleZ - transform.rotation.eulerAngles.z), -1, 1);
-        bikeModel.localRotation = Quaternion.RotateTowards(bikeModel.localRotation, Quaternion.Euler(targetRotation * rotationFactor), smoothSpeed * Time.deltaTime);
-        lastEulerAngleZ = bikeModel.rotation.eulerAngles.z;
-    }
+    private void StartRotation() { Invoke("EnableMovement", 2f); }
 
-    private void StartRotation() { StartCoroutine(WaitAndStartRotation()); }
-
-    private IEnumerator WaitAndStartRotation() {
-        yield return new WaitForSeconds(1.5f);
-        levelStarted = true;
-    }
+    private void EnableMovement() { isEnabled = true; }
 }

@@ -15,7 +15,10 @@ public class Speedlines : MonoBehaviour
         StartAnimation();
     }
 
-    private void FixedUpdate() { transform.localPosition = Vector3.forward * playerTransform.position.z; }
+    private void FixedUpdate() {
+        transform.localPosition = Vector3.forward * playerTransform.position.z;
+        transform.rotation = playerTransform.rotation;
+    }
 
     private void StartAnimation() { ps.Play(); }
 

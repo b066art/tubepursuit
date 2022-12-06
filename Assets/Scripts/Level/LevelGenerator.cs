@@ -32,10 +32,7 @@ public class LevelGenerator : MonoBehaviour
 
     private bool isEnabled = false;
 
-    private void Start() {
-        Invoke("GetPaths", 0.5f);
-        Invoke("GenerateLevel", 0.5f);
-    }
+    private void Awake() { EventManager.PathReadyEvent.AddListener(GenerateLevel); }
 
     private void FixedUpdate() {
         if (isEnabled) {
@@ -45,6 +42,8 @@ public class LevelGenerator : MonoBehaviour
     }
 
     private void GenerateLevel() {
+        GetPaths();
+
         for(; segmentP < distance; segmentP += segmentStep) {
             segmentS = Mathf.RoundToInt(Mathf.Floor(segmentP));
 
