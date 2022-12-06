@@ -7,22 +7,21 @@ using UnityEngine;
 
 public class ObstacleGenerator : MonoBehaviour
 {
-    [SerializeField] private GameObject[] obstaclePrefabs;
-
+    [SerializeField] private Transform levelPath;
     [SerializeField] private Transform playerTransform;
-    [SerializeField] private bool[] SegmentNumbers;
-    [SerializeField] private int maxRoadLength = 6;
-    [SerializeField] private int delay = 2;
-    [SerializeField] private float distanceBetweenSegments = 10f;
-    [SerializeField] private float maxPositionZ = 10f;
-    [SerializeField] private Vector3 waitingZone = new Vector3(0, 0, -48);
 
-    private GameObject[] RoadSegments = new GameObject[6];
-    private List<GameObject> ReadyRoad = new List<GameObject>();
+    [SerializeField] private Transform obstaclesObject;
 
-    private int currentRoadLength = 0;
-    private bool firstObstacle = true;
-    private bool generatingIsOn = false;
+    [SerializeField] private GameObject[] obstaclePrefab;
+
+    [SerializeField] private int distance;
+    [SerializeField] private int maxPositionZ;
+
+    [SerializeField] private float obstacleStep;
+
+    private List<Path> paths = new List<Path>();
+
+    private Transform currentObstacle = null;
 
     private int currentSegmentNumber = -1;
     private int lastSegmentNumber = -1;
@@ -34,66 +33,56 @@ public class ObstacleGenerator : MonoBehaviour
 
     private int currentLevel = 1;
 
+    private float obstacleP = 0;
+    private int obstacleS = 0;
+    private float obstacleT = 0;
+
+    private bool isEnabled = false;
+
     private void Start() {
-        EventManager.LevelStartEvent.AddListener(StartGenerating);
-        EventManager.LevelFinishEvent.AddListener(StopGenerating);
+        Invoke("GetPaths", 0.5f);
+        Invoke("GenerateObstacles", 0.5f);
     }
 
     private void FixedUpdate() {
-        if (generatingIsOn) {
-            if (currentRoadLength != maxRoadLength) {
-                currentSegmentNumber = Random.Range(0, RoadSegments.Length);
-
-                if (currentSegmentNumber != lastSegmentNumber) {
-                    if (currentSegmentNumber < RoadSegments.Length / 2) {
-                        if (SegmentNumbers[currentSegmentNumber] != true) {
-                            if (lastSegmentNumber != (RoadSegments.Length / 2) + currentSegmentNumber) { RoadCreation(); }
-                            else if (lastSegmentNumber == (RoadSegments.Length / 2) + currentSegmentNumber && currentRoadLength == RoadSegments.Length - 1) { RoadCreation(); }
-                        }
-                    } else if (currentSegmentNumber >= RoadSegments.Length / 2) {
-                        if (SegmentNumbers[currentSegmentNumber] != true) {
-                            if (lastSegmentNumber != currentSegmentNumber - (RoadSegments.Length / 2)) { RoadCreation(); }
-                            else if (lastSegmentNumber == currentSegmentNumber - (RoadSegments.Length / 2) && currentRoadLength == RoadSegments.Length - 1) { RoadCreation(); }
-                        }
-                    }
-                }
-            }
-
-            if (!firstObstacle && ReadyRoad.Count != 0) { RemoveRoad(); }
-        }
+        if (isEnabled) { if (playerTransform.position.z - obstaclesObject.GetChild(0).position.z > maxPositionZ) { MoveObstacle(); }}
     }
 
-    private void RemoveRoad() {
-        if (playerTransform.position.z - ReadyRoad[0].transform.position.z > maxPositionZ) {
-            int i = ReadyRoad[0].GetComponent<Obstacle>().number;
-            SegmentNumbers[i] = false;
-            ReadyRoad[0].transform.localPosition = waitingZone;
-            ReadyRoad.RemoveAt(0);
-            currentRoadLength--;
-        }
-    }
+    private void GenerateObstacles() {
+        for(; obstacleP < distance; obstacleP += obstacleStep) {
+            obstacleS = Mathf.RoundToInt(Mathf.Floor(obstacleP));
 
-    private void RoadCreation() {
-        if (ReadyRoad.Count > 0) {
-            if (firstObstacle) {
-                RoadSegments[currentSegmentNumber].transform.localPosition = ReadyRoad[ReadyRoad.Count - 1].transform.position + Vector3.forward * distanceBetweenSegments * (Mathf.RoundToInt(playerTransform.position.z / maxPositionZ) + delay);
-                if (RoadSegments[currentSegmentNumber].GetComponent<Obstacle>().rotatable == true) { RoadSegments[currentSegmentNumber].transform.rotation = Quaternion.Euler(0, 0, Random.Range(0, 360)); }
-                firstObstacle = false;
-            } else {
-            RoadSegments[currentSegmentNumber].transform.localPosition = ReadyRoad[ReadyRoad.Count - 1].transform.position + Vector3.forward * distanceBetweenSegments;
-            if (RoadSegments[currentSegmentNumber].GetComponent<Obstacle>().rotatable == true) { RoadSegments[currentSegmentNumber].transform.rotation = Quaternion.Euler(0, 0, Random.Range(0, 360)); }
-            }
-        } else if (ReadyRoad.Count == 0) {
-            RoadSegments[currentSegmentNumber].transform.localPosition = Vector3.zero;
+            if (obstacleS != 0) { obstacleT = obstacleP % obstacleS; }
+            else { obstacleT = obstacleP; }
+
+            GameObject obstacle = Instantiate(obstaclePrefab[0], obstaclesObject);
+
+            obstacle.transform.position = Bezier.GetPoint(paths[obstacleS].p0.position, paths[obstacleS].p1.position, paths[obstacleS].p2.position, paths[obstacleS].p3.position, obstacleT);
+            obstacle.transform.rotation = Quaternion.LookRotation(Bezier.GetFirstDerivative(paths[obstacleS].p0.position, paths[obstacleS].p1.position, paths[obstacleS].p2.position, paths[obstacleS].p3.position, obstacleT)) * Quaternion.Euler(0, 0, Random.Range(0, 360));
         }
 
-        RoadSegments[currentSegmentNumber].GetComponent<Obstacle>().number = currentSegmentNumber;
-        SegmentNumbers[currentSegmentNumber] = true;
-        lastSegmentNumber = currentSegmentNumber;
-        ReadyRoad.Add(RoadSegments[currentSegmentNumber]);
-        currentRoadLength++;
+        isEnabled = true;
     }
 
+    private void GetPaths() {
+        paths.Clear();
+        for (int i = 0; i < PathGenerator.Instance.pathLength; i++) { paths.Add(levelPath.GetChild(i).GetComponent<Path>()); }
+    }
+
+    private void MoveObstacle() {
+        currentObstacle = obstaclesObject.GetChild(0);
+
+        obstacleS = Mathf.RoundToInt(Mathf.Floor(obstacleP));
+        obstacleT = obstacleP % obstacleS;
+
+        currentObstacle.position = Bezier.GetPoint(paths[obstacleS].p0.position, paths[obstacleS].p1.position, paths[obstacleS].p2.position, paths[obstacleS].p3.position, obstacleT);
+        currentObstacle.rotation = Quaternion.LookRotation(Bezier.GetFirstDerivative(paths[obstacleS].p0.position, paths[obstacleS].p1.position, paths[obstacleS].p2.position, paths[obstacleS].p3.position, obstacleT)) * Quaternion.Euler(0, 0, Random.Range(0, 360));
+        
+        currentObstacle.SetAsLastSibling();
+        obstacleP += obstacleStep;
+    }
+
+    /*
     private void FindMinLevel() {
         for (int i = 0; i < obstacles.Length; i++) { obstacles[i] = obstacleMinLevel + i; }
         if (currentLevel + obstacles.Length - 1 > (obstacles[0] + obstacles[obstacles.Length - 1]) * obstacles.Length / 2) {
@@ -102,7 +91,7 @@ public class ObstacleGenerator : MonoBehaviour
         }
     }
 
-    private void GenerateArray() {
+    private void GenerateList() {
         if (obstacleMinLevel == 1) {
             for (int i = 0; i < obstacles.Length; i++) { obstacles[i] = 1; }
 
@@ -175,4 +164,5 @@ public class ObstacleGenerator : MonoBehaviour
     }
 
     private void StopGenerating() { generatingIsOn = false; }
+    */
 }

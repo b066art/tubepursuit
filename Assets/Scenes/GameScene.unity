@@ -1884,36 +1884,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5582292652359266070, guid: 25a8d38275862934e9fdedf6c1803a2c, type: 3}
   m_PrefabInstance: {fileID: 1080654241}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &94806047
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 94806048}
-  m_Layer: 0
-  m_Name: CameraTarget
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &94806048
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 94806047}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -5.5, z: 10}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 583897496}
-  m_RootOrder: 4
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &97137697 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5582292652359266070, guid: 25a8d38275862934e9fdedf6c1803a2c, type: 3}
@@ -36014,8 +35984,6 @@ Transform:
   - {fileID: 1072464433}
   - {fileID: 358149245}
   - {fileID: 369335419}
-  - {fileID: 1866113643}
-  - {fileID: 94806048}
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -36089,7 +36057,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc74e853ca78fb341b18a8800a318a6b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bikeModel: {fileID: 1072464433}
+  playerModel: {fileID: 1072464433}
+  rotationPoint: {fileID: 0}
+  bikeModel: {fileID: 1650180526}
   levelPath: {fileID: 1965297791}
   smoothSpeed: 100
   swerveSpeed: 0.5
@@ -58871,7 +58841,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &956274016
 Transform:
   m_ObjectHideFlags: 0
@@ -58898,26 +58868,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db33fce84e775ff46b98bcf88d3a3f99, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  obstaclePrefabs:
-  - {fileID: 1107699280300435356, guid: 65d30f6ef030be540bacd9610c9458c7, type: 3}
-  - {fileID: 7977834926609080695, guid: 1f0b7a1b4a5b9944fac9f7a2c495659f, type: 3}
-  - {fileID: 2713887359877420834, guid: f44e7a5f9b11d3a4d89dfea68233fbec, type: 3}
-  - {fileID: 1185562708694115460, guid: 08af711cab761dd439528fdc2c722fdb, type: 3}
-  - {fileID: 8310552634301515017, guid: 9a29073862a83cf4284596abd16d93cf, type: 3}
-  - {fileID: 1546547226150789580, guid: 04ad2f244701526459b4a6aa9362f0f9, type: 3}
-  - {fileID: 3906323989171426679, guid: 220bd59860e052f44bb210fbed74c394, type: 3}
-  - {fileID: 7836521550528706577, guid: 2a864fbf8cc70da4db41594a335bccd2, type: 3}
-  - {fileID: 3906323989171426679, guid: 9ee98e8b4bab2394bacdb9d6a91e0728, type: 3}
-  - {fileID: 7836521550528706577, guid: b1d174d0f5aca8c418be7b7481f8967e, type: 3}
-  - {fileID: 5756924560503239792, guid: a0914ce44b6794f4082f18a22fefa3b5, type: 3}
-  - {fileID: 7836521550528706577, guid: 02cc904a424a1464abca5e78df5422c6, type: 3}
+  levelPath: {fileID: 1965297791}
   playerTransform: {fileID: 1650180526}
-  SegmentNumbers: 000000000000
-  maxRoadLength: 6
-  delay: 3
-  distanceBetweenSegments: 48
-  maxPositionZ: 48
-  waitingZone: {x: 0, y: 0, z: -48}
+  obstaclesObject: {fileID: 1034137156}
+  obstaclePrefab:
+  - {fileID: 1546547226150789580, guid: 04ad2f244701526459b4a6aa9362f0f9, type: 3}
+  distance: 5
+  maxPositionZ: 80
+  obstacleStep: 1
 --- !u!1001 &956823723
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -59142,7 +59100,6 @@ GameObject:
   - component: {fileID: 963194229}
   - component: {fileID: 963194227}
   - component: {fileID: 963194226}
-  - component: {fileID: 963194230}
   m_Layer: 3
   m_Name: Camera
   m_TagString: MainCamera
@@ -59227,24 +59184,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db18e4d77399fe64196473d31fead0a5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &963194230
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 963194225}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3be135571a2e2374c8dee4baaf45bc82, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  defaultPosition: {x: 0, y: 0, z: -10}
-  defaultRotation: {x: 0.1305262, y: 0, z: 0, w: 0.9914449}
-  model: {fileID: 1072464433}
-  target: {fileID: 1866113643}
-  lookPosition: {fileID: 94806048}
-  smoothSpeed: 0.025
 --- !u!1001 &964998290
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -60604,6 +60543,36 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 25a8d38275862934e9fdedf6c1803a2c, type: 3}
+--- !u!1 &1034137155
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1034137156}
+  m_Layer: 0
+  m_Name: Obstacles
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1034137156
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1034137155}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1166471158}
+  m_RootOrder: 9
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1043188473
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -61099,7 +61068,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1072464433}
   m_Layer: 3
-  m_Name: GameObject
+  m_Name: PlayerModel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -63117,6 +63086,7 @@ Transform:
   - {fileID: 926899643}
   - {fileID: 343914471}
   - {fileID: 1753307517}
+  - {fileID: 1034137156}
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -84127,7 +84097,7 @@ GameObject:
   - component: {fileID: 1650180527}
   - component: {fileID: 1650180528}
   m_Layer: 3
-  m_Name: Model
+  m_Name: BikeModel
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -98775,36 +98745,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5582292652359266070, guid: 25a8d38275862934e9fdedf6c1803a2c, type: 3}
   m_PrefabInstance: {fileID: 1604358017}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &1866113642
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1866113643}
-  m_Layer: 0
-  m_Name: CameraPos
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1866113643
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1866113642}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -10}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 583897496}
-  m_RootOrder: 3
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1870838734
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class PlayerMove : MonoBehaviour
 {
+    [SerializeField] Transform playerModel;
+    [SerializeField] Transform rotationPoint;
     [SerializeField] Transform bikeModel;
     [SerializeField] private Transform levelPath;
 
@@ -46,7 +48,9 @@ public class PlayerMove : MonoBehaviour
             transform.rotation = Quaternion.LookRotation(Bezier.GetFirstDerivative(paths[s].p0.position, paths[s].p1.position, paths[s].p2.position, paths[s].p3.position, t));
         }
 
-        if (controls) { bikeModel.transform.RotateAround(transform.position, Vector3.forward, swerveInputSystem.MoveFactorX * swerveSpeed); }
+        if (controls) {
+            playerModel.Rotate(0f, 0f, swerveInputSystem.MoveFactorX * swerveSpeed);
+        }
         RotateModel();
     }
 
