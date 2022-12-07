@@ -33,11 +33,13 @@ public class AIRotation : MonoBehaviour
     }
 
     private float CalculateAngle() {
-        float enemyAngle = transform.localRotation.eulerAngles.z;
+        float enemyAngle = enemyModel.localRotation.eulerAngles.z;
         float obstacleAngle = closestObstacle.localRotation.eulerAngles.z;
 
-        if (Mathf.Abs(obstacleAngle - enemyAngle) > Mathf.Abs(enemyAngle - obstacleAngle)) { return Mathf.Abs(obstacleAngle - enemyAngle); }
-        else { return Mathf.Abs(enemyAngle - obstacleAngle); }
+        return enemyAngle - obstacleAngle;
+
+        //if (Mathf.Abs(obstacleAngle - enemyAngle) > Mathf.Abs(enemyAngle - obstacleAngle)) { return Mathf.Abs(obstacleAngle - enemyAngle); }
+        //else { return Mathf.Abs(enemyAngle - obstacleAngle); }
     }
 
     private void FindClosestObstacle() {

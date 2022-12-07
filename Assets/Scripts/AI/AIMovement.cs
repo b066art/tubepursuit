@@ -8,6 +8,7 @@ public class AIMovement : MonoBehaviour
     [SerializeField] private float defaultSpeed;
     [SerializeField] private float startSpeed;
     [SerializeField] private float speedFactor;
+    [SerializeField] private float increasedSpeedTime;
 
     [SerializeField] private Transform levelPath;
 
@@ -49,7 +50,7 @@ public class AIMovement : MonoBehaviour
     private void IncreaseSpeed() {
         currentSpeed = defaultSpeed;
         targetSpeed = defaultSpeed * speedFactor;
-        Invoke("DefaultSpeed", 3f);
+        Invoke("DefaultSpeed", increasedSpeedTime);
     }
 
     private void DefaultSpeed() { targetSpeed = defaultSpeed; }
