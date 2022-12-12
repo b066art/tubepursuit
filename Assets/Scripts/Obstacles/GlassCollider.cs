@@ -10,7 +10,7 @@ public class GlassCollider : MonoBehaviour
     private void Start() { meshRenderer = GetComponentInParent<MeshRenderer>(); }
 
     private void OnTriggerEnter(Collider other) {
-        if (other.tag == "Player") {
+        if (other.CompareTag("Player")) {
             EventManager.HitEvent.Invoke();
             GameObject fragments = Instantiate(fragmentsPrefab, transform.position, Quaternion.identity);
             HideGlass();

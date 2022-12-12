@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class BoostGenerator : MonoBehaviour
 {
+    public static BoostGenerator Instance;
+
     [SerializeField] private Transform levelPath;
     [SerializeField] private Transform playerTransform;
 
@@ -24,12 +26,15 @@ public class BoostGenerator : MonoBehaviour
     private float boostT = 0;
 
     private bool isEnabled = false;
+    private bool isFirst = true;
 
-    private void Awake() { EventManager.PathReadyEvent.AddListener(GenerateLevel); }
+    private void Awake() { Instance = this; }
+
+    private void Start() { EventManager.LevelStartEvent.AddListener(GenerateBoosts); }
 
     private void FixedUpdate() { if (isEnabled) { if (playerTransform.position.z - boosts.GetChild(0).position.z > maxPositionZ) { MoveBoost(); }}}
 
-    private void GenerateLevel() {
+    private void GenerateBoosts() {
         GetPaths();
 
         for(; boostP < distance; boostP += boostStep) {
@@ -38,10 +43,12 @@ public class BoostGenerator : MonoBehaviour
             if (boostS != 0) { boostT = boostP % boostS; }
             else { boostT = boostP; }
 
-            GameObject boost = Instantiate(boostPrefab, boosts);
+            if (!isFirst) {
+                GameObject boost = Instantiate(boostPrefab, boosts);
 
-            boost.transform.position = Bezier.GetPoint(paths[boostS].p0.position, paths[boostS].p1.position, paths[boostS].p2.position, paths[boostS].p3.position, boostT);
-            boost.transform.rotation = Quaternion.LookRotation(Bezier.GetFirstDerivative(paths[boostS].p0.position, paths[boostS].p1.position, paths[boostS].p2.position, paths[boostS].p3.position, boostT)) * Quaternion.Euler(0, 0, Random.Range(0, 360));
+                boost.transform.position = Bezier.GetPoint(paths[boostS].p0.position, paths[boostS].p1.position, paths[boostS].p2.position, paths[boostS].p3.position, boostT);
+                boost.transform.rotation = Quaternion.LookRotation(Bezier.GetFirstDerivative(paths[boostS].p0.position, paths[boostS].p1.position, paths[boostS].p2.position, paths[boostS].p3.position, boostT)) * Quaternion.Euler(0, 0, Random.Range(0, 360));
+            } else { isFirst = false; }
         }
 
         isEnabled = true;
@@ -64,4 +71,6 @@ public class BoostGenerator : MonoBehaviour
         currentBoost.SetAsLastSibling();
         boostP += boostStep;
     }
+
+    public void StopGenerating() { isEnabled = false; } 
 }

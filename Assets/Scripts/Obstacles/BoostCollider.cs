@@ -7,7 +7,7 @@ public class BoostCollider : MonoBehaviour
     private void Start() { meshRenderer = GetComponentInParent<MeshRenderer>(); }
 
     private void OnTriggerEnter(Collider other) {
-        if (other.tag == "Player") {
+        if (other.CompareTag("Player")) {
             EventManager.BoostEvent.Invoke();
             HideModel();
         }

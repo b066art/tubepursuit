@@ -7,6 +7,8 @@ using UnityEngine;
 
 public class ObstacleGenerator : MonoBehaviour
 {
+    public static ObstacleGenerator Instance;
+
     [SerializeField] private int difficultyModifier;
 
     [SerializeField] private Transform levelPath;
@@ -39,6 +41,8 @@ public class ObstacleGenerator : MonoBehaviour
     private float obstacleT = 0;
 
     private bool isEnabled = false;
+
+    private void Awake() { Instance = this; }
 
     private void Start() { EventManager.LevelStartEvent.AddListener(GenerateObstacles); }
 
@@ -157,4 +161,6 @@ public class ObstacleGenerator : MonoBehaviour
         }
         return sortedArray;
     }
+
+    public void StopGenerating() { isEnabled = false; } 
 }

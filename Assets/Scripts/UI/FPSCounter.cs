@@ -14,7 +14,7 @@ public class FPSCounter : MonoBehaviour
 
     private int fps;
 
-    private float cooldownTime = .25f;
+    private float cooldownTime = .2f;
     private float lastShowTime = 0;
 
     private bool showFPS = false;

@@ -10,7 +10,7 @@ public class BoxCollider : MonoBehaviour
     private void Start() { meshes = GetComponentsInChildren<MeshRenderer>(); }
 
     private void OnTriggerEnter(Collider other) {
-        if (other.tag == "Player") {
+        if (other.CompareTag("Player")) {
             EventManager.HitEvent.Invoke();
             GameObject fragments = Instantiate(splintersPrefab, transform.position, Quaternion.identity);
             HideBox();

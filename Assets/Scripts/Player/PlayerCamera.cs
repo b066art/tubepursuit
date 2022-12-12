@@ -22,7 +22,6 @@ public class PlayerCamera : MonoBehaviour
 
     private void FOVJump() {
         jumpSequence = DOTween.Sequence();
-
         jumpSequence.Append(cam.DOFieldOfView(70f, 1f).SetEase(Ease.InOutSine));
         jumpSequence.Join(cam.DOShakePosition(.5f, .5f, 10, 0));
         jumpSequence.Append(cam.DOFieldOfView(90f, 1f).SetEase(Ease.InOutSine));
@@ -36,12 +35,12 @@ public class PlayerCamera : MonoBehaviour
     }
 
     private void FOVDefault() {
+        boostSequence = DOTween.Sequence();
         boostSequence.Append(cam.DOFieldOfView(90f, .5f).SetEase(Ease.InOutSine));
     }
 
     private void FOVReduce() {
         reduceSequence = DOTween.Sequence();
-
         reduceSequence.Append(cam.DOFieldOfView(70f, 1f).SetEase(Ease.InOutSine));
         reduceSequence.Join(cam.DOShakePosition(.5f, .5f, 10, 0));
 

@@ -1,67 +1,65 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class CityGenerator : MonoBehaviour
 {
-    [SerializeField] private GameObject[] RoadSegments;
+    [SerializeField] private Transform levelPath;
     [SerializeField] private Transform playerTransform;
-    [SerializeField] private bool[] SegmentNumbers;
-    [SerializeField] private int maxRoadLength = 6;
-    [SerializeField] private float distanceBetweenSegments = 10f;
-    [SerializeField] private float maxPositionZ = 10f;
-    [SerializeField] private Vector3 waitingZone = new Vector3(0, 0, -40);
 
-    private List<GameObject> ReadyRoad = new List<GameObject>();
+    [SerializeField] private Transform city;
 
-    private int currentRoadLength = 0;
-    private bool generatingIsOn = true;
+    [SerializeField] private GameObject cityPrefab;
 
-    private int currentSegmentNumber = -1;
-    private int lastSegmentNumber = -1;
+    [SerializeField] private int distance;
+    [SerializeField] private int maxPositionZ;
 
-    private void FixedUpdate() {
-        if (generatingIsOn) {
-            if (currentRoadLength != maxRoadLength) {
-                currentSegmentNumber = Random.Range(0, RoadSegments.Length);
+    [SerializeField] private float cityStep;
 
-                if (currentSegmentNumber != lastSegmentNumber) {
-                    if (currentSegmentNumber < RoadSegments.Length / 2) {
-                        if (SegmentNumbers[currentSegmentNumber] != true) {
-                            if (lastSegmentNumber != (RoadSegments.Length / 2) + currentSegmentNumber) { RoadCreation(); }
-                            else if (lastSegmentNumber == (RoadSegments.Length / 2) + currentSegmentNumber && currentRoadLength == RoadSegments.Length - 1) { RoadCreation(); }
-                        }
-                    } else if (currentSegmentNumber >= RoadSegments.Length / 2) {
-                        if (SegmentNumbers[currentSegmentNumber] != true) {
-                            if (lastSegmentNumber != currentSegmentNumber - (RoadSegments.Length / 2)) { RoadCreation(); }
-                            else if (lastSegmentNumber == currentSegmentNumber - (RoadSegments.Length / 2) && currentRoadLength == RoadSegments.Length - 1) { RoadCreation(); }
-                        }
-                    }
-                }
-            }
+    private List<Path> paths = new List<Path>();
 
-            if (ReadyRoad.Count != 0) { RemoveRoad(); }
+    private Transform currentLine = null;
+
+    private float cityP = .5f;
+    private int cityS = 0;
+    private float cityT = 0;
+
+    private bool isEnabled = false;
+
+    private void Awake() { EventManager.PathReadyEvent.AddListener(GenerateCity); }
+
+    private void FixedUpdate() { if (isEnabled) { if (playerTransform.position.z - city.GetChild(0).position.z > maxPositionZ) { MoveLine(); }}}
+
+    private void GenerateCity() {
+        GetPaths();
+
+        for(; cityP < distance; cityP += cityStep) {
+            cityS = Mathf.RoundToInt(Mathf.Floor(cityP));
+
+            if (cityS != 0) { cityT = cityP % cityS; }
+            else { cityT = cityP; }
+
+            GameObject cityLine = Instantiate(cityPrefab, city);
+
+            cityLine.transform.position = Bezier.GetPoint(paths[cityS].p0.position, paths[cityS].p1.position, paths[cityS].p2.position, paths[cityS].p3.position, cityT) + Vector3.down * 7.5f;
         }
+
+        isEnabled = true;
     }
 
-    private void RemoveRoad() {
-        if (playerTransform.position.z - ReadyRoad[0].transform.position.z > maxPositionZ) {
-            int i = ReadyRoad[0].GetComponent<Obstacle>().number;
-            SegmentNumbers[i] = false;
-            ReadyRoad[0].transform.localPosition = waitingZone;
-            ReadyRoad.RemoveAt(0);
-            currentRoadLength--;
-        }
+    private void GetPaths() {
+        paths.Clear();
+        for (int i = 0; i < PathGenerator.Instance.pathLength; i++) { paths.Add(levelPath.GetChild(i).GetComponent<Path>()); }
     }
 
-    private void RoadCreation() {
-        if (ReadyRoad.Count > 0) { RoadSegments[currentSegmentNumber].transform.localPosition = ReadyRoad[ReadyRoad.Count - 1].transform.position + Vector3.forward * distanceBetweenSegments; }
-        else if (ReadyRoad.Count == 0) { RoadSegments[currentSegmentNumber].transform.localPosition = Vector3.zero; }
+    private void MoveLine() {
+        currentLine = city.GetChild(0);
 
-        RoadSegments[currentSegmentNumber].GetComponent<Obstacle>().number = currentSegmentNumber;
-        SegmentNumbers[currentSegmentNumber] = true;
-        lastSegmentNumber = currentSegmentNumber;
-        ReadyRoad.Add(RoadSegments[currentSegmentNumber]);
-        currentRoadLength++;
+        cityS = Mathf.RoundToInt(Mathf.Floor(cityP));
+        cityT = cityP % cityS;
+
+        currentLine.position = Bezier.GetPoint(paths[cityS].p0.position, paths[cityS].p1.position, paths[cityS].p2.position, paths[cityS].p3.position, cityT);
+        
+        currentLine.SetAsLastSibling();
+        cityP += cityStep;
     }
 }
