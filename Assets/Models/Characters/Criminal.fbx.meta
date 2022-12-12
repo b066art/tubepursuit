@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 0436ed376d53e3c48817a674595cdf48
+guid: b6ef141dc4e13544b9f83928bb976e4a
 ModelImporter:
   serializedVersion: 20300
   internalIDToNameTable: []
@@ -7,13 +7,28 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: Arrows
-    second: {fileID: 2100000, guid: fbc582480de13ef4cb59b7bcb42113c5, type: 2}
+      name: Body_mat
+    second: {fileID: 2100000, guid: 1c052ce00196d4d41a9aee4ab86ea1b1, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: Ring
-    second: {fileID: 2100000, guid: fe9f6dfef9fc80b41b04ddd7edb1dbb5, type: 2}
+      name: Boots_mat
+    second: {fileID: 2100000, guid: f8f06f85fc620b64e9eea50edad473f6, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Clothes_mat
+    second: {fileID: 2100000, guid: 84320c044b907354cbf4218ea23eded3, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Glass_mat
+    second: {fileID: 2100000, guid: 96ff5b4bac3402c40a2e68730d2b683b, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Helmet_mat
+    second: {fileID: 2100000, guid: 61c1c59c2b8451746bf206d0f48b14ec, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
@@ -44,7 +59,7 @@ ModelImporter:
     isReadable: 0
   meshes:
     lODScreenPercentages: []
-    globalScale: 25
+    globalScale: 40
     meshCompression: 0
     addColliders: 0
     useSRGBMaterialColor: 1
@@ -95,7 +110,7 @@ ModelImporter:
     armStretch: 0.05
     legStretch: 0.05
     feetSpacing: 0
-    globalScale: 25
+    globalScale: 40
     rootMotionBoneName: 
     hasTranslationDoF: 0
     hasExtraRoot: 0

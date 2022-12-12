@@ -19,7 +19,7 @@ public class BoostGenerator : MonoBehaviour
 
     private Transform currentBoost = null;
 
-    private float boostP = 0;
+    private float boostP = .5f;
     private int boostS = 0;
     private float boostT = 0;
 
