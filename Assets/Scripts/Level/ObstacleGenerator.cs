@@ -41,6 +41,7 @@ public class ObstacleGenerator : MonoBehaviour
     private float obstacleT = 0;
 
     private bool isEnabled = false;
+    private bool isFirst = true;
 
     private void Awake() { Instance = this; }
 
@@ -67,10 +68,12 @@ public class ObstacleGenerator : MonoBehaviour
             if (obstacleS != 0) { obstacleT = obstacleP % obstacleS; }
             else { obstacleT = obstacleP; }
 
+            if (!isFirst) {
             GameObject obstacle = Instantiate(obstaclePrefabs[mixedObstacles[arrayIndex++] - 1], obstaclesObject);
 
             obstacle.transform.position = Bezier.GetPoint(paths[obstacleS].p0.position, paths[obstacleS].p1.position, paths[obstacleS].p2.position, paths[obstacleS].p3.position, obstacleT);
             obstacle.transform.rotation = Quaternion.LookRotation(Bezier.GetFirstDerivative(paths[obstacleS].p0.position, paths[obstacleS].p1.position, paths[obstacleS].p2.position, paths[obstacleS].p3.position, obstacleT)) * Quaternion.Euler(0, 0, Random.Range(0, 360));
+            } else { isFirst = false; }
         }
 
         isEnabled = true;

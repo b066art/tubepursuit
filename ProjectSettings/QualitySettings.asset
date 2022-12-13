@@ -4,7 +4,7 @@
 QualitySettings:
   m_ObjectHideFlags: 0
   serializedVersion: 5
-  m_CurrentQuality: 2
+  m_CurrentQuality: 0
   m_QualitySettings:
   - serializedVersion: 2
     name: Very Low
@@ -41,8 +41,7 @@ QualitySettings:
     asyncUploadPersistentBuffer: 1
     resolutionScalingFixedDPIFactor: 1
     customRenderPipeline: {fileID: 0}
-    excludedTargetPlatforms:
-    - Android
+    excludedTargetPlatforms: []
   - serializedVersion: 2
     name: Low
     pixelLightCount: 0
@@ -115,7 +114,8 @@ QualitySettings:
     asyncUploadPersistentBuffer: 1
     resolutionScalingFixedDPIFactor: 1
     customRenderPipeline: {fileID: 0}
-    excludedTargetPlatforms: []
+    excludedTargetPlatforms:
+    - Android
   - serializedVersion: 2
     name: High
     pixelLightCount: 2
@@ -228,7 +228,7 @@ QualitySettings:
     excludedTargetPlatforms:
     - Android
   m_PerPlatformDefaultQuality:
-    Android: 2
+    Android: 0
     GameCoreScarlett: 5
     GameCoreXboxOne: 5
     Lumin: 5
@@ -238,9 +238,9 @@ QualitySettings:
     PS5: 5
     PSP2: 2
     Stadia: 5
-    Standalone: 5
-    WebGL: 3
-    Windows Store Apps: 5
+    Standalone: 0
+    WebGL: 0
+    Windows Store Apps: 0
     XboxOne: 5
-    iPhone: 2
+    iPhone: 0
     tvOS: 2

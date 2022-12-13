@@ -9,7 +9,6 @@ public class SettingsMenu : MonoBehaviour
     [SerializeField] private RectTransform musicButton;
     [SerializeField] private RectTransform soundsButton;
     [SerializeField] private RectTransform vibrationButton;
-    [SerializeField] private RectTransform qualityButton;
     [SerializeField] private RectTransform fpsButton;
 
     [SerializeField] private Image musicIconOn;
@@ -18,8 +17,6 @@ public class SettingsMenu : MonoBehaviour
     [SerializeField] private Image soundsIconOff;
     [SerializeField] private Image vibrationIconOn;
     [SerializeField] private Image vibrationIconOff;
-    [SerializeField] private Image qualityIconOn;
-    [SerializeField] private Image qualityIconOff;
     [SerializeField] private Image fpsIconOn;
     [SerializeField] private Image fpsIconOff;
 
@@ -30,7 +27,6 @@ public class SettingsMenu : MonoBehaviour
     public bool music = true;
     public bool sounds = true;
     public bool vibration = true;
-    public bool quality = true;
     public bool fps = false;
 
     private void Awake() { Instance = this; }
@@ -56,8 +52,7 @@ public class SettingsMenu : MonoBehaviour
         mySequence.Append(musicButton.DOAnchorPosX(200f, .25f).SetEase(Ease.InOutQuad));
         mySequence.Insert(.05f, soundsButton.DOAnchorPosX(200f, .25f).SetEase(Ease.InOutQuad));
         mySequence.Insert(.1f, vibrationButton.DOAnchorPosX(200f, .25f).SetEase(Ease.InOutQuad));
-        mySequence.Insert(.15f, qualityButton.DOAnchorPosX(200f, .25f).SetEase(Ease.InOutQuad));
-        mySequence.Insert(.2f, fpsButton.DOAnchorPosX(200f, .25f).SetEase(Ease.InOutQuad));
+        mySequence.Insert(.15f, fpsButton.DOAnchorPosX(200f, .25f).SetEase(Ease.InOutQuad));
     }
 
     private void ShowSettings() {
@@ -66,8 +61,7 @@ public class SettingsMenu : MonoBehaviour
         mySequence.Append(musicButton.DOAnchorPosX(-50f, .25f).SetEase(Ease.InOutQuad));
         mySequence.Insert(.05f, soundsButton.DOAnchorPosX(-50f, .25f).SetEase(Ease.InOutQuad));
         mySequence.Insert(.1f, vibrationButton.DOAnchorPosX(-50f, .25f).SetEase(Ease.InOutQuad));
-        mySequence.Insert(.15f, qualityButton.DOAnchorPosX(-50f, .25f).SetEase(Ease.InOutQuad));
-        mySequence.Insert(.2f, fpsButton.DOAnchorPosX(-50f, .25f).SetEase(Ease.InOutQuad));
+        mySequence.Insert(.15f, fpsButton.DOAnchorPosX(-50f, .25f).SetEase(Ease.InOutQuad));
     }
 
     public void MusicSwitch() {
@@ -84,18 +78,14 @@ public class SettingsMenu : MonoBehaviour
 
     public void VibrationSwitch() {
         vibration = !vibration;
+        if (vibration) { Vibration.Vibrate(250); }
         RefreshIcons();
         PauseMenu.Instance.RefreshIcons();
     }
 
-    public void QualitySwitch() {
-        quality = !quality;
-        RefreshIcons();
-    }
-
     public void FPSSwitch() {
         fps = !fps;
-        FPSCounter.Instance.ChangeState();
+        FPSDisplay.Instance.ChangeState();
         RefreshIcons();
     }
 
@@ -108,9 +98,6 @@ public class SettingsMenu : MonoBehaviour
 
         vibrationIconOn.enabled = vibration;
         vibrationIconOff.enabled = !vibration;
-
-        qualityIconOn.enabled = quality;
-        qualityIconOff.enabled = !quality;
 
         fpsIconOn.enabled = fps;
         fpsIconOff.enabled = !fps;

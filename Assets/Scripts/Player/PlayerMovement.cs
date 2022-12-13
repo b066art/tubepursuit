@@ -11,6 +11,8 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float swerveSpeed = .35f;
     [SerializeField] private Vector3 targetRotation = new Vector3(0, 3f, 30f);
 
+    [SerializeField] private ParticleSystem explosion;
+
     private List<Path> paths = new List<Path>();
 
     private Path currentPath;
@@ -19,16 +21,21 @@ public class PlayerMovement : MonoBehaviour
     private bool isEnabled = false;
     private bool controls = false;
 
-    [SerializeField] private float speed;
+    [SerializeField] private float defaultSpeed;
+    private float speed;
 
     private float p = 0;
     private int s = 0;
     private float t = 0;
 
     private void Awake() {
+        EventManager.BoostEvent.AddListener(TemporarilyIncreaseSpeed);
+        EventManager.HitEvent.AddListener(TemporarilyReduceSpeed);
+        EventManager.DeadEvent.AddListener(ControlsOff);
         EventManager.PathReadyEvent.AddListener(EnableMovement);
         EventManager.LevelStartEvent.AddListener(EnableControls);
-        EventManager.DeadEvent.AddListener(ControlsOff);
+
+        speed = defaultSpeed;
     }
 
     private void Start() { swerveInputSystem = GetComponent<SwerveInputSystem>(); }
@@ -68,9 +75,32 @@ public class PlayerMovement : MonoBehaviour
         isEnabled = true;
     }
 
-    private void EnableControls() { Invoke("ControlsOn", 1f); }
+    private void EnableControls() { Invoke("ControlsOn", 2f); }
 
     private void ControlsOn() { controls = true; }
 
-    private void ControlsOff() { controls = false; }
+    private void ControlsOff() {
+        isEnabled = false;
+        controls = false;
+        explosion.Play();
+        bikeModel.gameObject.SetActive(false);
+    }
+
+    private void IncreaseSpeed() { speed *= 1.3f; }
+
+    private void ReduceSpeed() { speed /= 1.3f; }
+
+    private void ResetSpeed() { speed = defaultSpeed; }
+
+    private void TemporarilyIncreaseSpeed() {
+        IncreaseSpeed();
+        Invoke("ResetSpeed", 3f);
+    }
+
+    private void TemporarilyReduceSpeed() {
+        ReduceSpeed();
+        Invoke("ResetSpeed", 3f);
+    }
+
+
 }

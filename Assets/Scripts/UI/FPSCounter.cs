@@ -1,50 +1,72 @@
-using System.Text;
-using TMPro;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class FPSCounter : MonoBehaviour
 {
-    public static FPSCounter Instance;
+    [SerializeField]
+    private int _frameRange = 60;
 
-    [SerializeField] private Toggle toggleFPS;
+    private int[] _fpsBuffer;
+    private int _fpsBufferIndex;
 
-    private TMP_Text fpsText;
-    private StringBuilder outputText = new StringBuilder(10);
+    public int AverageFPS { get; private set; }
+    public int HighestPFS { get; private set; }
+    public int LowersFPS { get; private set; }
 
-    private int fps;
+    private void Update()
+    {
+        if (_fpsBuffer == null || _frameRange != _fpsBuffer.Length)
+        {
+            InitializeBuffer();
+        }
 
-    private float cooldownTime = .2f;
-    private float lastShowTime = 0;
-
-    private bool showFPS = false;
-
-    private void Awake() { Instance = this; }
-
-    private void Start() {
-        showFPS = SettingsMenu.Instance.fps;
-        fpsText = GetComponent<TMP_Text>();
+        UpdateBuffer();
+        CalculateFps();
     }
 
-    private void Update() {
-        if (showFPS) {
-            if (lastShowTime > cooldownTime) {
-                fps = Mathf.RoundToInt(1.0f / Time.deltaTime);
+    private void InitializeBuffer()
+    {
+        if (_frameRange <= 0)
+        {
+            _frameRange = 1;
+        }
 
-                outputText.Length = 0;
-                outputText.Append("FPS: ");
-                outputText.Append(fps);
+        _fpsBuffer = new int[_frameRange];
+        _fpsBufferIndex = 0;
+    }
 
-                fpsText.text = outputText.ToString();
-                lastShowTime = 0;
-            }
-
-            lastShowTime += Time.deltaTime;
+    private void UpdateBuffer()
+    {
+        _fpsBuffer[_fpsBufferIndex++] = (int)(1f / Time.unscaledDeltaTime);
+        if (_fpsBufferIndex >= _frameRange)
+        {
+            _fpsBufferIndex = 0;
         }
     }
 
-    public void ChangeState() {
-        showFPS = SettingsMenu.Instance.fps;
-        fpsText.text = null;
-    } 
+    private void CalculateFps()
+    {
+        int sum = 0;
+        int lowest = int.MaxValue;
+        int highest = 0;
+        for (int i = 0; i < _frameRange; i++)
+        {
+            int fps = _fpsBuffer[i];
+            sum += fps;
+            if (fps > highest)
+            {
+                highest = fps;
+            }
+
+            if (fps < lowest)
+            {
+                lowest = fps;
+            }
+        }
+
+        HighestPFS = highest;
+        LowersFPS = lowest;
+        AverageFPS = sum / _frameRange;
+    }
 }

@@ -34,7 +34,6 @@ public class CurrentLevel : MonoBehaviour
     private void IncreaseLevel() {
         SetRating(CriminalsCounter.Instance.GetCount());
         playerLevel++;
-        NextLevel();
     }
 
     public void SetLevel(int level) {

@@ -40,7 +40,7 @@ public class CityGenerator : MonoBehaviour
 
             GameObject cityLine = Instantiate(cityPrefab, city);
 
-            cityLine.transform.position = Bezier.GetPoint(paths[cityS].p0.position, paths[cityS].p1.position, paths[cityS].p2.position, paths[cityS].p3.position, cityT) + Vector3.down * 7.5f;
+            cityLine.transform.position = Bezier.GetPoint(paths[cityS].p0.position, paths[cityS].p1.position, paths[cityS].p2.position, paths[cityS].p3.position, cityT) + Vector3.down * 12f;
         }
 
         isEnabled = true;
